@@ -1,0 +1,35 @@
+import React, { useState, useRef } from "react";
+import { MapContainer, TileLayer, Marker } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import "leaflet-geosearch/dist/geosearch.css";
+import L from "leaflet";
+import SearchField from "../SearchField/SearchField";
+import style from "./style.module.css";
+
+const MapComponent = () => {
+  const [center, setCenter] = useState([55.6366, 51.8245]);
+  const [showInitialMarker, setShowInitialMarker] = useState(false);
+  const mapRef = useRef(null);
+
+  return (
+    <MapContainer center={center} zoom={14} className={style.map} ref={mapRef}>
+      <TileLayer
+        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+      {}
+      {showInitialMarker &&
+        center &&
+        center[0] !== undefined &&
+        center[1] !== undefined && <Marker position={center}></Marker>}
+      <SearchField
+        setCenter={(newCenter) => {
+          setCenter(newCenter);
+          setShowInitialMarker(true);
+        }}
+      />
+    </MapContainer>
+  );
+};
+
+export default MapComponent;
