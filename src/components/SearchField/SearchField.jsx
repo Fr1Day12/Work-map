@@ -3,9 +3,14 @@ import { useMap } from "react-leaflet";
 import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
 import L from "leaflet";
 import extractAddress from "../../helpers/extractAddress";
+import axios from "axios";
 
 const SearchField = ({ setCenter }) => {
   const map = useMap();
+
+  useEffect(() => {
+    axios.get("/6676d3c342aa855bcb16e9fa");
+  }, []);
 
   useEffect(() => {
     const provider = new OpenStreetMapProvider({
