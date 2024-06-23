@@ -9,8 +9,8 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<MapComponent />} />
-        <Route path="/auth/login" element={<Login />} />
-        <Route path="/auth/register" element={<Registration />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Registration />} />
       </Routes>
     </>
   );

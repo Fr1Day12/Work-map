@@ -1,62 +1,83 @@
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Navigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 import style from "./style.module.css";
+import { fetchAuth, selectIsAuth } from "../../redux/slices/auth";
 
 const Login = () => {
-  const [loginUsername, setLoginUsername] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
-  const [error, setError] = useState({ username: false, password: false });
+  const isAuth = useSelector(selectIsAuth);
+  const dispatch = useDispatch();
 
-  const handleLogin = () => {
-    // // Здесь должна быть ваша логика проверки
-    // if (!loginUsername) setError((prev) => ({ ...prev, username: true }));
-    // if (!loginPassword) setError((prev) => ({ ...prev, password: true }));
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors, isValid },
+  } = useForm({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+    mode: "onChange",
+  });
+
+  const onSubmit = async (values) => {
+    const data = await dispatch(fetchAuth(values));
+
+    if (!data.payload) {
+      return alert("Не удалось авторизоваться!");
+    }
+
+    if ("token" in data.payload) {
+      window.localStorage.setItem("token", data.payload.token);
+    }
   };
 
+  if (isAuth) {
+    return <Navigate to="/" />;
+  }
+
   return (
-    <div className={style.container}>
-      <div className={style["form-wrapper"]}>
-        <h2>Вход в аккаунт</h2>
-
-        <div
-          className={`${style["form-group"]} ${
-            error.username ? style.error : ""
-          }`}>
-          <label htmlFor="login-username">E-Mail:</label>
-          <input
-            id="login-username"
-            type="text"
-            placeholder="Введите логин"
-            onChange={(e) => {
-              setLoginUsername(e.target.value);
-              setError((prev) => ({ ...prev, username: false }));
-            }}
-          />
-          {error.username && (
-            <div className={style["error-message"]}>Неверно указана почта</div>
-          )}
-        </div>
-
-        <div
-          className={`${style["form-group"]} ${
-            error.password ? style.error : ""
-          }`}>
-          <label htmlFor="login-password">Пароль:</label>
-          <input
-            id="login-password"
-            type="password"
-            placeholder="Введите пароль"
-            onChange={(e) => {
-              setLoginPassword(e.target.value);
-              setError((prev) => ({ ...prev, password: false }));
-            }}
-          />
-        </div>
-
-        <button className={style.button} onClick={handleLogin}>
+    <Paper elevation={4} className={style.container}>
+      <Typography variant="h5" className={style.title}>
+        Вход в аккаунт
+      </Typography>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <TextField
+          className={style.field}
+          label="E-mail"
+          variant="outlined"
+          type="email"
+          fullWidth
+          error={Boolean(errors.email?.message)}
+          helperText={errors.email?.message}
+          {...register("email", { required: "Укажите почту" })}
+        />
+        <TextField
+          type="password"
+          label="Пароль"
+          variant="outlined"
+          fullWidth
+          helperText={errors.password?.message}
+          error={Boolean(errors.password?.message)}
+          className={style.field}
+          {...register("password", { required: "Введите пароль" })}
+        />
+        <Button
+          type="submit"
+          variant="contained"
+          disableElevation
+          fullWidth
+          size="large">
           Войти
-        </button>
-      </div>
-    </div>
+        </Button>
+      </form>
+    </Paper>
   );
 };
 
