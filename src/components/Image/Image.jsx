@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import style from "./style.module.css";
 
 const Image = () => {
-  const [burgerMenu, setBurgerMenu] = useState(true);
+  const [burgerMenu, setBurgerMenu] = useState(false);
   const toggleMenu = () => {
     setBurgerMenu(!burgerMenu);
   };
@@ -21,12 +21,12 @@ const Image = () => {
       {burgerMenu && (
         <div className={style.burgerMenu}>
           <div>
-            <Link to="/auth/login" className={style.link}>
+            <Link to="/login" className={style.link}>
               <button className={style.button}>Login</button>
             </Link>
           </div>
           <div>
-            <Link to="/auth/register" className={style.link}>
+            <Link to="/register" className={style.link}>
               <button className={style.button}>Registration</button>
             </Link>
           </div>

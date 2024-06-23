@@ -6,8 +6,11 @@ import L from "leaflet";
 import SearchField from "../SearchField/SearchField";
 import style from "./style.module.css";
 import Image from "../Image/Image";
+import { selectIsAuth } from "../../redux/slices/auth";
+import { useSelector } from "react-redux";
 
 const MapComponent = () => {
+  const isAuth = useSelector(selectIsAuth);
   const [center, setCenter] = useState([55.6366, 51.8245]);
   const [showInitialMarker, setShowInitialMarker] = useState(false);
   const mapRef = useRef(null);
@@ -34,7 +37,7 @@ const MapComponent = () => {
             setShowInitialMarker(true);
           }}
         />
-        <Image />
+        {!isAuth && <Image />}
       </MapContainer>
     </div>
   );
