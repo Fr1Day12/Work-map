@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import style from "./style.module.css";
-import { fetchAuth, selectIsAuth } from "../../redux/slices/auth";
+import { fetchAuth, selectIsAuth, setAuth } from "../../redux/slices/auth";
 
 const Login = () => {
   const isAuth = useSelector(selectIsAuth);
@@ -20,8 +20,8 @@ const Login = () => {
     formState: { errors, isValid },
   } = useForm({
     defaultValues: {
-      email: "",
-      password: "",
+      email: "test@test.ru",
+      password: "12345",
     },
     mode: "onChange",
   });
@@ -35,6 +35,7 @@ const Login = () => {
 
     if ("token" in data.payload) {
       window.localStorage.setItem("token", data.payload.token);
+      dispatch(setAuth(data.payload));
     }
   };
 
