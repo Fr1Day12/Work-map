@@ -16,7 +16,6 @@ const Login = () => {
   const {
     register,
     handleSubmit,
-    setError,
     formState: { errors, isValid },
   } = useForm({
     defaultValues: {
@@ -53,8 +52,8 @@ const Login = () => {
           className={style.field}
           label="E-mail"
           variant="outlined"
-          type="email"
           fullWidth
+          type="email"
           error={Boolean(errors.email?.message)}
           helperText={errors.email?.message}
           {...register("email", { required: "Укажите почту" })}
@@ -74,7 +73,8 @@ const Login = () => {
           variant="contained"
           disableElevation
           fullWidth
-          size="large">
+          size="large"
+          disabled={!isValid}>
           Войти
         </Button>
       </form>
