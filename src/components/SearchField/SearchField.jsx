@@ -9,10 +9,6 @@ const SearchField = ({ setCenter }) => {
   const map = useMap();
 
   useEffect(() => {
-    axios.get("/6676d3c342aa855bcb16e9fa");
-  }, []);
-
-  useEffect(() => {
     const provider = new OpenStreetMapProvider({
       params: {
         bounded: 1,
